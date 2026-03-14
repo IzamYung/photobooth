@@ -5,6 +5,7 @@ const timerInput = document.getElementById("timer")
 const countdownDiv = document.getElementById("countdown")
 const captureBtn = document.getElementById("capture")
 const shutterSound = document.getElementById("shutterSound")
+const flashOverlay = document.getElementById("flashOverlay")
 
 const previewModal = document.getElementById("previewModal")
 const previewImage = document.getElementById("previewImage")
@@ -130,15 +131,24 @@ captureBtn.onclick = async ()=>{
     const selected = parseInt(document.querySelector('input[name="photoCount"]:checked').value)
     for(let i=0;i<selected;i++){
         await countdown(parseInt(timerInput.value))
+
+        flashOverlay.classList.add("bg-white")
+
         const photo = takePhoto()
         capturedPhotos.push(photo)
+
         shutterSound.currentTime = 0
         shutterSound.play()
+
+        setTimeout(()=>{
+            flashOverlay.classList.remove("bg-white")
+        }, 200)
 
         const previewOverlay = document.createElement("img")
         previewOverlay.src = photo
         previewOverlay.className = "absolute top-0 left-0 w-full h-full object-cover rounded-xl z-50"
         video.parentElement.appendChild(previewOverlay)
+        
         await sleep(1200)
         previewOverlay.remove()
     }
