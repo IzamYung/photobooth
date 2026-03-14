@@ -63,7 +63,7 @@ function takePhoto(){
     tempCanvas.width = cw
     tempCanvas.height = ch
 
-    const targetRatio = 7 / 5
+    const targetRatio = cw / ch
     const videoRatio = vw / vh
 
     let sx, sy, sw, sh
@@ -90,30 +90,35 @@ function takePhoto(){
 }
 
 async function buildStrip(){
-    const width = video.clientWidth
-    const heightPerPhoto = video.clientHeight
-    const gap = 20
-    const padding = 20
+    const width = video.clientWidth;
+    const padding = 20;
+    const gap = 20;
 
-    canvas.width = width
-    canvas.height = (heightPerPhoto * capturedPhotos.length) + (gap * (capturedPhotos.length - 1)) + padding * 2
+    const photoWidth = width - (padding * 2);
+    
+    const photoRatio = video.clientWidth / video.clientHeight;
+    const photoHeight = photoWidth / photoRatio; 
 
-    ctx.fillStyle = themes[currentFilter].bg
-    ctx.fillRect(0,0,canvas.width,canvas.height)
+    canvas.width = width;
+    canvas.height = (photoHeight * capturedPhotos.length) + (gap * (capturedPhotos.length - 1)) + (padding * 2);
 
-    let y = padding
+    ctx.fillStyle = themes[currentFilter].bg;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    let y = padding;
 
     for(const photo of capturedPhotos){
-        const img = new Image()
+        const img = new Image();
         await new Promise(resolve=>{
-            img.onload = resolve
-            img.src = photo
-        })
-        ctx.drawImage(img, padding, y, width - padding * 2, heightPerPhoto)
-        ctx.strokeStyle = themes[currentFilter].border
-        ctx.lineWidth = 6
-        ctx.strokeRect(padding, y, width - padding * 2, heightPerPhoto)
-        y += heightPerPhoto + gap
+            img.onload = resolve;
+            img.src = photo;
+        });
+        
+        ctx.drawImage(img, padding, y, photoWidth, photoHeight);
+        ctx.strokeStyle = themes[currentFilter].border;
+        ctx.lineWidth = 6;
+        ctx.strokeRect(padding, y, photoWidth, photoHeight);
+        y += photoHeight + gap;
     }
 }
 
