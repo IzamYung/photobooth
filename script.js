@@ -1,6 +1,7 @@
 const video = document.getElementById("camera")
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
+const timerInput = document.getElementById("timer")
 const countdownDiv = document.getElementById("countdown")
 const captureBtn = document.getElementById("capture")
 
@@ -127,7 +128,7 @@ captureBtn.onclick = async ()=>{
     capturedPhotos = []
     const selected = parseInt(document.querySelector('input[name="photoCount"]:checked').value)
     for(let i=0;i<selected;i++){
-        await countdown(3)
+        await countdown(parseInt(timerInput.value))
         const photo = takePhoto()
         capturedPhotos.push(photo)
 
