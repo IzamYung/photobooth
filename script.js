@@ -4,6 +4,7 @@ const ctx = canvas.getContext("2d")
 const timerInput = document.getElementById("timer")
 const countdownDiv = document.getElementById("countdown")
 const captureBtn = document.getElementById("capture")
+const shutterSound = document.getElementById("shutterSound")
 
 const previewModal = document.getElementById("previewModal")
 const previewImage = document.getElementById("previewImage")
@@ -131,6 +132,8 @@ captureBtn.onclick = async ()=>{
         await countdown(parseInt(timerInput.value))
         const photo = takePhoto()
         capturedPhotos.push(photo)
+        shutterSound.currentTime = 0
+        shutterSound.play()
 
         const previewOverlay = document.createElement("img")
         previewOverlay.src = photo
