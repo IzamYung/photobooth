@@ -123,6 +123,7 @@ async function buildStrip(){
 }
 
 captureBtn.onclick = async ()=>{
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     capturedPhotos = []
     const selected = parseInt(document.querySelector('input[name="photoCount"]:checked').value)
     for(let i=0;i<selected;i++){
